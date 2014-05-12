@@ -1,0 +1,5 @@
+{
+	"require": {
+		"lncd/oauth2": "*"
+	}
+}

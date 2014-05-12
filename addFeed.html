@@ -1,0 +1,217 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<title>Feeds</title>
+<!--<link rel="stylesheet" href="css/styles.css" />-->
+<link rel="stylesheet" href="FeedEk/css/FeedEk.css">
+<style>
+#btnAdd {
+	width: 48px; height: 48px; float: left; margin: 10px 0 0 -80px;
+	background: url(button_grey_add.png); text-indent: -9999px;
+	background-repeat:no-repeat;
+	padding: 0 0 0 0px; /*IE fix*/
+	cursor: pointer;
+	border:none;
+}
+
+#URL {
+	width: 425px; 
+	float: left; padding: 20px 150px 20px 40px;
+	background: #ededed url(bar-bg.png) repeat-x;
+	border: 3px solid #c7c7c7;
+	border-radius: 50px; -moz-border-radius: 100px; -webkit-border-radius: 100px;
+	font: italic 17px Georgia; color: #898989;
+	outline: none; /*Remove Chrome and Safari glows on focus*/
+}
+#cont{
+	border:none;
+	position:absolute;
+	left:25%;
+	top:0px;
+}
+#feednews{
+	position:absolute;
+	top:80px;
+	left:25%;
+}
+#title {
+    text-transform: uppercase;
+	background-color:grey;
+	width:665px;
+	text-align:center;
+}
+</style>
+
+</head>
+
+<body>
+<fieldset id='cont'>
+	<input type="text" id="URL" name="URL" placeholder="Enter an URL ..." />
+	<button id="btnAdd">Add Feed</button>
+	<!-- <input type="submit" value="Search" id="btnAdd" /> -->
+</fieldset>
+
+<div id="divRssi">
+<ul id="feedList"></ul>
+</div>
+
+<div id="feednews"><div id='feednewsdetails'></div></div>
+<form id="postForm">
+	
+<div class="mainArea">
+
+<label style="display:none;">Id:</label>
+<input id="idUser" name="id" type="text" style="display:none;" value="1" disabled />
+
+
+
+</div>
+
+
+</form>
+<div >
+	<button id="btnAdd">Add Feed</button>
+</div>
+<script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
+<!--<script src="js/jquery-1.7.1.min.js"></script>-->
+<script src="FeedEk/js/FeedEk.js"></script>
+<script src="FeedEk/js/moment-with-langs.min.js"></script>
+<script>
+$( document ).ready(function() {
+  
+    $( "#btnAdd" ).click(function( event ) {
+	var id = $('#idUser').val();
+		addFeed();
+		//alert(id);
+ 
+    });
+ 
+});
+
+</script>
+<script>
+function addFeed() {
+	var rootURL = "http://localhost/ws/api/";
+	console.log('addFeed');
+	$.ajax({
+		type: 'POST',
+		contentType: 'application/json',
+		url: rootURL + '/addFeed/' + $('#idUser').val(),
+		dataType: "json",
+		data: formToJSON(),
+		success: function(data, textStatus, jqXHR){
+			alert('Feed created successfully');
+			$('#idUser').val(data.idUser);
+		},
+		error: function(jqXHR, textStatus, errorThrown){
+			alert('addFeed error: ' + textStatus);
+		}
+	});
+}
+
+// Helper function to serialize all the form fields into a JSON string
+function formToJSON() {
+	return JSON.stringify({
+		"id": $('#idUser').val(), 
+		"URL": $('#URL').val()
+		});
+}
+
+</script>
+<script>
+$( document ).ready(function() {
+	var id= $('#idUser').val(); 
+	//console.log('findAll');
+	$.ajax({
+		type: 'GET',
+		url: 'http://localhost/ws/api/getUserFeeds/'+id,
+		dataType: "json", // data type of response
+		success:function(data){ 
+		//alert(data[0].URL);
+				
+			$.each(data, function (i) { 
+				
+				var toappend ="<div id='title'><h2 class="+i+">"+data[i].title+"</h2></div>";
+				
+				toappend +="<div><select class='myselect' idselect="+data[i].id+"><option value='private'>Private</option><option value='public'>Public</option></select><button idfeed="+data[i].id+" class='change'>Change status</button><div id='confirm'></div></div>";
+				//console.log(toappend);
+				
+				if(data[i].title){
+					$("#feednews").append(toappend);
+					$('h2[class='+i+']').click(function(){
+						//getDetailsFeed();
+						alert('ok'+i);
+						console.log('OK');
+						$("#feednewsdetails").append("<div id='title'>"+data[i].title+"</div><div id=rss"+i+ ">"+i+"</div>");
+						$('#rss'+i).FeedEk({
+							FeedUrl: data[i].URL,
+							MaxCount: 10,
+							DateFormat: 'MM/DD/YYYY HH:mm'
+						});
+						$('h2[class='+i+']').hide();
+						$('select[idselect='+data[i].id+']').hide();
+						$('button[idfeed='+data[i].id+']').hide();
+					});
+					
+				}
+				/*$("#feednews").append(toappend+"<div id=rss"+i+ ">"+i+"</div>");
+				$('#rss'+i).FeedEk({
+					FeedUrl: data[i].URL,
+					MaxCount: 1,
+					DateFormat: 'MM/DD/YYYY HH:mm'
+				});*/
+
+			});     
+       }
+	});
+
+});
+</script>
+<script>
+$(document).on('click', '.change', function() {
+	/*var selectvar=$(this).attr('idfeed');
+<!-- 	console.log(selectvarvalue);
+	//var selectvar = $('#myselect').val();
+		$('select').change(function() {
+			var selectvarvalue=$('select[idselect='+selectvar+']').val();
+			console.log(selectvarvalue);
+		}); */
+});
+</script>
+
+
+<script type="text/javascript">
+  $(document).on('change','.myselect',function(){
+	var selectvar = $(this).val();
+	var idfeed=$(this).attr('idselect');
+	var id= $('#idUser').val(); 
+	console.log(selectvar,idfeed);
+		$.ajax({
+		type: 'PUT',
+		contentType: 'application/json',
+		url: 'http://localhost/ws/api/updateFeed/'+id,
+		dataType: "json",
+		data: JSON.stringify({
+		"id":id,
+		"statuschosen": selectvar, 
+		"idfeed": idfeed
+		}),
+		success: function(data, textStatus, jqXHR){
+			console.log(data.statuschosen);
+			$('#confirm').css({'color': 'green','background':'blue'});
+			 $('#confirm').html("<b>Feed changed to Status :"+data.statuschosen+"</b>").hide().show('slow').delay(5000).hide('slow');
+			 
+		},
+		error: function(jqXHR, textStatus, errorThrown){
+			alert('UpdateFeed error: ' + textStatus);
+		}
+	});
+	
+  });
+  
+</script>
+<script>
+
+</script>
+</body>
+</html>

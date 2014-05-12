@@ -1,0 +1,57 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<title>Posts</title>
+<link rel="stylesheet" href="css/styles.css" />
+</head>
+
+<body>
+
+<div class="header">
+	<input type="text" id="searchKey"/>
+	<button id="btnSearch">Search</button>
+	<button id="btnAdd">New Post</button>
+</div>
+
+
+<div class="leftArea">
+<ul id="postList"></ul>
+</div>
+
+<form id="postForm">
+	
+<div class="mainArea">
+
+<label style="display:none;">Id:</label>
+<input id="postId" name="id" type="text" style="display:none;" disabled />
+
+<label>Name:</label>
+<input type="text" id="name" name="name" required>
+
+<label>URL:</label>
+<input type="text" id="URL" name="URL"/>
+
+<label>Other:</label>
+<input type="text" id="other" name="other"/>
+
+
+<button id="btnSave">Save</button>
+<button id="btnDelete">Delete</button>
+
+</div>
+
+<div class="rightArea">
+
+<img id="pic" height="300"/>
+
+<label>Description:</label>
+<textarea id="description" name="description"></textarea>
+</div>
+
+</form>
+
+<script src="js/jquery-1.7.1.min.js"></script>
+<script src="js/main.js"></script>
+
+</body>
+</html>

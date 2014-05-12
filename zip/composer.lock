@@ -1,0 +1,83 @@
+{
+    "_readme": [
+        "This file locks the dependencies of your project to a known state",
+        "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file"
+    ],
+    "hash": "aa2d6f13a7bf376cc4fd01ae5d7856a6",
+    "packages": [
+        {
+            "name": "league/oauth2-server",
+            "version": "2.1.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/thephpleague/oauth2-server.git",
+                "reference": "98be9ab2521089a7d3a9c97fbea3927c83cdaad5"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/thephpleague/oauth2-server/zipball/98be9ab2521089a7d3a9c97fbea3927c83cdaad5",
+                "reference": "98be9ab2521089a7d3a9c97fbea3927c83cdaad5",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.0"
+            },
+            "replace": {
+                "league/oauth2server": "*",
+                "lncd/oauth2": "*"
+            },
+            "require-dev": {
+                "mockery/mockery": ">=0.7.2"
+            },
+            "suggest": {
+                "zetacomponents/database": "Allows use of the build in PDO storage classes"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "League\\OAuth2\\Server": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Alex Bilbie",
+                    "email": "hello@alexbilbie.com",
+                    "homepage": "http://www.alexbilbie.com",
+                    "role": "Developer"
+                }
+            ],
+            "description": "A lightweight and powerful OAuth 2.0 authorization and resource server library with support for all the core specification grants. This library will allow you to secure your API with OAuth and allow your applications users to approve apps that want to access their data from your API.",
+            "homepage": "https://github.com/php-loep/oauth2-server",
+            "keywords": [
+                "Authentication",
+                "api",
+                "authorization",
+                "oauth",
+                "oauth2",
+                "resource",
+                "server"
+            ],
+            "time": "2013-06-02 12:55:01"
+        }
+    ],
+    "packages-dev": [
+
+    ],
+    "aliases": [
+
+    ],
+    "minimum-stability": "stable",
+    "stability-flags": [
+
+    ],
+    "platform": [
+
+    ],
+    "platform-dev": [
+
+    ]
+}
